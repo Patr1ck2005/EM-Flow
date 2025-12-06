@@ -1,6 +1,6 @@
 # ElectromagneticFlow
 
-ElectromagneticFlow is a wave solver designed for simulating various types of wave phenomena, with a particular focus on electromagnetic waves. The tool offers a high degree of interactivity, making it suitable for both educational and research purposes. The simulations are built to be physically accurate, providing a robust platform for exploring wave behaviors in different contexts.
+ElectromagneticFlow is a wave solver designed for simulating various types of wave phenomena, with a particular focus on electromagnetic waves. The tool offers a high degree of interactivity, making it suitable for both educational and research purposes. The simulations are built to be physically accurate, providing a robust platform for exploring wave behaviors in different contexts. See https://patr1ck2005.github.io/EM-Flow/
 
 ## Features
 
