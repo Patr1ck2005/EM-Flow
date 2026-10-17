@@ -1,0 +1,59 @@
+{
+  "kind": "unmodified screenshots of the existing public application",
+  "capture_date": "2026-10-17",
+  "url": "https://patr1ck2005.github.io/EM-Flow/",
+  "source_repository": "https://github.com/Patr1ck2005/EM-Flow",
+  "source_snapshot_inspected": "29c3279efb1e77ace959126b9f6e797b04b2f07f",
+  "deployment_commit": "unknown; deployed preset list differs from inspected source",
+  "capture_method": "existing in-app browser screenshot API; preset selected through application UI",
+  "browser_version": "not recorded",
+  "solver_validation": "qualitative preset rendering only; no local build or convergence/accuracy benchmark",
+  "license": "inherited Java source GPL-2.0-or-later; Paul Falstad copyright notices preserved",
+  "readout": {
+    "palette": "Color Scheme 1, signed wave-amplitude display; not an energy-density plot",
+    "units": "screenshots retain native UI scale; no calibrated physical axes are supplied",
+    "mode": "Photonic Crystal -TM (scalar wave)",
+    "speed": 4,
+    "resolution": 512,
+    "damping": 0,
+    "view": "2D; Stopped unchecked at capture"
+  },
+  "files": [
+    {
+      "path": "two-source.png",
+      "preset": "Two-Source",
+      "wave_setting": "Sound",
+      "source_frequency_slider": 4,
+      "brightness_slider": 640,
+      "dimensions_px": [
+        1280,
+        720
+      ],
+      "sha256": "89fdc57ee5b70a7eceb8e8ecbf7ab802ec8113ed9109b475734b69b8f072d541"
+    },
+    {
+      "path": "single-slit.png",
+      "preset": "Single-Slit",
+      "wave_setting": "Visible Light/IR/UV",
+      "source_frequency_slider": 19,
+      "brightness_slider": 578,
+      "dimensions_px": [
+        1280,
+        720
+      ],
+      "sha256": "8e26e58be35a3bb369e7923938fd0d1b73f48a6d8729c015a67b9ff9a2db06eb"
+    },
+    {
+      "path": "refraction.png",
+      "preset": "Refraction",
+      "wave_setting": "Visible Light/IR/UV",
+      "source_frequency_slider": 6,
+      "brightness_slider": 565,
+      "dimensions_px": [
+        1280,
+        720
+      ],
+      "sha256": "26cd00f5caec2f5bb916b711b233ec6034d7ca96d8982451f5af7cea2d03a7b0"
+    }
+  ]
+}

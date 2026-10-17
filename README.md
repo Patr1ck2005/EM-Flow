@@ -1,82 +1,78 @@
-# ElectromagneticFlow
+# EM-Flow · ElectromagneticFlow
 
-ElectromagneticFlow is a wave solver designed for simulating various types of wave phenomena, with a particular focus on electromagnetic waves. The tool offers a high degree of interactivity, making it suitable for both educational and research purposes. The simulations are built to be physically accurate, providing a robust platform for exploring wave behaviors in different contexts. See https://patr1ck2005.github.io/EM-Flow/
+**An interactive, browser-based wave sandbox built on Paul Falstad's Ripple/RippleGL.**
 
-## Features
+[中文](README.zh-CN.md) · [Open the public app](https://patr1ck2005.github.io/EM-Flow/) · [Screenshot gallery](docs/showcase/gallery.html) · [Build notes](docs/build.md)
 
-- **Multiple Simulation Methods**: Supports a variety of simulation techniques for solving wave equations, including both analytical and numerical approaches.
-- **Interactive Visualizations**: Real-time, interactive visualizations of electromagnetic waves and their interactions with different media and boundaries.
-- **Physically Accurate**: Designed with a focus on physical rigor to ensure reliable and precise results for educational and research applications.
-- **User-Friendly Interface**: Easy-to-use controls for adjusting simulation parameters, including wave sources, boundary conditions, and more.
+![Two-source interference in the deployed EM-Flow application, with its real controls visible](docs/showcase/two-source.png)
 
-## Use Cases
+Real screenshot of the public application: **Two-Source**, **Waves = Sound**, scalar TM mode. The palette shows signed wave amplitude, rather than energy density. Captured 2026-10-17; [provenance and settings](docs/showcase/manifest.json).
 
-- **Photonics Research**: Investigate wave propagation, interference, and diffraction in electromagnetic systems.
-- **Educational Tool**: Aimed at helping students and researchers build a deeper understanding of wave phenomena in physics.
+## Explore waves directly
 
-## Building the web application
+Choose a preset, watch it evolve, and change sources or media to test an intuition.
 
-The tools you will need to build the project are:
+| Explore | What to look for |
+| --- | --- |
+| Two sources | Alternating constructive and destructive interference |
+| Single slit | The transmitted wave spreading beyond the aperture |
+| Refraction | A change in wavefront direction and wavelength across a medium boundary |
+| Editable scenes | Sources, obstacles and media controlled through the browser interface |
 
-* Eclipse, Oxygen version.
-* GWT plugin for Eclipse.
+The source contains a WebGL scalar-wave update and a separate TE field-update shader. The UI exposes scalar TM/TE choices and a `Rigorous FDTD -TE` choice. These are implementation modes, not a claim of general 3D Maxwell validation. Spatial resolution, boundaries, damping and the selected equation affect the result.
 
-Install "Eclipse for Java developers" from [here](https://www.eclipse.org/downloads/packages/). To add the GWT plugin for Eclipse follow the instructions [here](https://gwt-plugins.github.io/documentation/gwt-eclipse-plugin/Download.html).
+<table>
+<tr><td><img src="docs/showcase/single-slit.png" alt="Single-Slit preset in the deployed application"></td><td><img src="docs/showcase/refraction.png" alt="Refraction preset with two media in the deployed application"></td></tr>
+<tr><td>Single-Slit · visible-light setting · scalar TM mode.</td><td>Refraction · visible-light setting · scalar TM mode.</td></tr>
+</table>
 
-This repository is a project folder for your Eclipse project space. Once you have a local copy you can then build and run in development mode or build for deployment. Running in super development mode is done by clicking on the "run" icon on the toolbar and choosing http://127.0.0.1:8888/Ripple.html from the "Development Mode" tab which appears. Building for deployment is done by selecting the project root node and using the GWT button on the Eclipse taskbar and choosing "GWT Compile Project...".
+All three images are unmodified browser captures of the deployed app. They are qualitative demonstrations, with UI slider values recorded in the manifest. They are not calibrated measurements, convergence studies or screenshots of a freshly built local checkout.
 
-GWT will build its output in to the "war" directory. In the "war" directory the file "iframe.html" is loaded as an iFrame in to the spare space at the bottom of the right hand pannel. It can be used for branding etc.
+## Run the application
 
-## Deployment of the web application
+**The verified entry is the [public browser app](https://patr1ck2005.github.io/EM-Flow/).** It requires a WebGL-capable browser. Select a preset from the top-right list; `Stopped` pauses the evolution, and `Clear Waves` clears the current field.
 
-* "GWT Compile Project..." as explained above. This will put the outputs in to the "war" directory in the Eclipse project folder. You then need to copy everything in the "war" directory, except the "WEB-INF" directory, on to your web server.
+The source checkout is a legacy **Java + GWT + WebGL** project. It includes `war/Ripple.html` and shader/JavaScript assets, but does **not** include the generated `war/ripple/ripple.nocache.js` entry or a pinned command-line build setup. Serving `war/` before GWT compilation is insufficient.
 
-The link for the full-page version of the application is now:
-`http://<your host>/<your path>/Ripple.html`
+[Build notes](docs/build.md) preserve the original Eclipse/GWT workflow, expected output structure, conditional static-serving command and Electron packaging route. A one-command source build has not been verified.
 
-Just for reference the files should look like this
+## How a scene becomes a frame
 
+```mermaid
+flowchart LR
+    A["Preset or edited sources and media"] --> B["Java / GWT scene controls"]
+    B --> C["WebGL textures: fields and material parameters"]
+    C --> D["Selected wave / TE update shader"]
+    D --> E["Signed-amplitude display shader"]
+    E --> F["Interactive browser canvas"]
+    F --> B
 ```
--+ Directory containing the front page (eg "ripple")
-  +- Ripple.html - full page version of application
-  ++ ripple (directory)
-   +- various files built by GWT
-   +- examples (directory)
-   +- setuplist.txt (index in to example directory)
-```
 
-## Embedding
+Source entry points:
 
-You can link to the full page version of the application using the link shown above.
+- [Scene controller](src/com/falstad/ripple/client/RippleSim.java): examples, controls, import/export and wave settings.
+- [GWT module](src/com/falstad/ripple/Ripple.gwt.xml): Java entry point and public resources.
+- [HTML and shaders](war/Ripple.html) and [WebGL runtime](war/ripple.js).
+- [Preset index](src/com/falstad/ripple/public/setuplist.txt) and [example scenes](src/com/falstad/ripple/public/examples).
 
-If you want to embed the application in another page then use an iframe with the src being the full-page version.
+This repository is `Patr1ck2005/EM-Flow`, default branch `master`. Related `ripplegl` or `ElectromagneticFlow` forks can have different code and build layouts. The deployed page is not pinned to the source commit used for these notes; its preset list differs from the checked-in list.
 
-You can add query parameters to link to change the applications startup behaviour. The following are supported:
-```
-.../Ripple.html?rol=<string> // Load the example from the URL
-.../Ripple.html?startExample=<filename> // Loads the file named "filename" from the "examples" directory
-.../Ripple.html?colorScheme=rrggbb,rrggbb,... // 8 hex color specifications for walls, + waves, - waves, 0 waves, +,-,0 waves in media, sources
-```
-## Building an Electron application
+## Versions and verification
 
-The [Electron](https://electronjs.org/) project allows web applications to be distributed as local executables for a variety of platforms. This repository contains the additional files needed to build Ripple as an Electron application.
+| Item | Evidence |
+| --- | --- |
+| Source snapshot inspected | `29c3279efb1e77ace959126b9f6e797b04b2f07f` |
+| In-source Ripple version string | 1.4 |
+| GWT module DTD | 2.7.0 reference; this does not pin the installed SDK |
+| Bundled matrix library | glMatrix 0.9.5 |
+| Electron wrapper | package 0.0.1; manifest declares Electron ≥9.3.1 (legacy route) |
+| Verified here | Public app loads; Two-Source, Single-Slit and Refraction presets render |
+| Remaining build gap | No generated GWT entry, pinned SDK or verified automated source build |
 
-The general approach to building an Electron application for a particular platform is documented [here](https://electronjs.org/docs/tutorial/application-distribution). The following instructions apply this approach to Ripple.
+No benchmark or quantitative solver-accuracy claim is made by these screenshots. [Gallery and evidence](docs/showcase/gallery.html).
 
-To build the Electron application:
-* Compile the application using GWT, as above.
-* Download and unpack a [pre-built Electron binary directory](https://github.com/electron/electron/releases) version 9.3.2 for the target platform.
-* Copy the "app" directory from this repository to the location specified [here](https://electronjs.org/docs/tutorial/application-distribution) in the Electron binary directory structure.
-* Copy the "war" directory, containing the compiled Ripple application, in to the "app" directory the Electron binary directory structure.
-* Run the "Electron" executable file. It should automatically load Ripple.
+## Origin and license
 
-Thanks to @Immortalin for the initial work in applying Electron to CircuitJS1, which was then applied to Ripple.
+This project builds on **Paul Falstad's Ripple/RippleGL**, with acknowledgements to the original project and the Electron-wrapper work credited to **Immortalin** in the earlier README.
 
-
-## License
-
-This project is licensed under the GNU General Public License, version 2 or later.
-
-## Acknowledgements
-
-I would like to express my gratitude to Paul Falstad for his original work on the Ripple Tank simulation, which laid the foundation for this project. His contributions have been invaluable, and this project builds upon his legacy to provide a more interactive and physically rigorous simulation tool.
+The inherited Java source headers state **GNU GPL version 2 or later** (`GPL-2.0-or-later`), including the original copyright and warranty notice. Preserve those notices and the applicable GPL terms when redistributing or modifying the program. This documentation does not relicense the inherited code.
